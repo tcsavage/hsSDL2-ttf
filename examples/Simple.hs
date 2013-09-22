@@ -6,14 +6,14 @@ import Graphics.UI.SDL.TTF
 
 main :: IO ()
 main = withInit [InitEverything] $ withTTF $ do
-    f <- ttfOpenFont "Aldrich-Regular.ttf" 100
+    f <- openFont "Aldrich-Regular.ttf" 100
     withWindow "Hello World!" (Position 100 100) (Size 640 480) [WindowShown] $ \win ->
         withRenderer win (Device (-1)) [Accelerated, PresentVSync] $ \ren -> do
             --bmp <- loadBMP "hello.bmp"
             --tex1 <- createTextureFromSurface ren bmp
-            txt <- ttfRenderTextSolid f (Color 0 0 255) "Foo"
+            txt <- renderTextSolid f (Color 0 0 255) "Foo"
             tex2 <- createTextureFromSurface ren txt
-            (w, h) <- ttfSizeText f "Foo"
+            (w, h) <- sizeText f "Foo"
             renderClear ren
             --renderCopy ren tex1 Nothing Nothing
             renderCopy ren tex2 Nothing (Just $ Rect 20 20 w h)
@@ -21,4 +21,4 @@ main = withInit [InitEverything] $ withTTF $ do
 
             threadDelay (10^6 * 2)
             return ()
-    ttfCloseFont f
+    closeFont f

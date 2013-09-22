@@ -15,6 +15,10 @@ category:            Graphics
 build-type:          Simple
 cabal-version:       >=1.8
 
+flag buildExamples
+  description: Build example executables.
+  default:     False
+
 library
   exposed-modules:     Graphics.UI.SDL.TTF
   -- other-modules:       
@@ -27,5 +31,8 @@ library
 executable sdlttf-examples-simple
   main-is:             Simple.hs
   hs-source-dirs:      examples
-  build-depends:       base ==4.6.*, SDL2, hsSDL2-ttf
   extra-libraries:     SDL2_ttf
+  if flag(buildExamples)
+    build-depends:       base ==4.6.*, SDL2, hsSDL2-ttf
+  else
+    buildable:           False

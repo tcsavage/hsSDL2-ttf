@@ -26,6 +26,6 @@ library
 
 executable sdlttf-examples-simple
   main-is:             Simple.hs
-  hs-source-dirs:      Examples
+  hs-source-dirs:      examples
   build-depends:       base ==4.6.*, SDL2, hsSDL2-ttf
   extra-libraries:     SDL2_ttf

@@ -36,7 +36,7 @@ data SDLTTFException = InitFail String
 
 instance Exception SDLTTFException
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_Init"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_Init"
     c_ttf_init :: IO CInt
 
 ttfInit :: IO ()
@@ -47,7 +47,7 @@ ttfInit = do
                          throwIO $ InitFail (fromMaybe "Unknown" err)
               otherwise -> throwIO $ Other "Unknown return value from 'ttfInit'"
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_Quit"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_Quit"
     c_ttf_quit :: IO ()
 
 ttfQuit :: IO ()
@@ -64,13 +64,13 @@ type FontStruct = ()
 
 newtype Font = WrapFont { unwrapFont :: ForeignPtr FontStruct }
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_OpenFont"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_OpenFont"
     c_ttf_open_font :: CString -> CInt -> IO (Ptr FontStruct)
 
-foreign import ccall safe "SDL2/SDL_ttf.h &TTF_CloseFont"
+foreign import ccall unsafe "SDL2/SDL_ttf.h &TTF_CloseFont"
     c_ttf_close_font_ptr :: FunPtr (Ptr FontStruct -> IO ())
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_CloseFont"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_CloseFont"
     c_ttf_close_font :: Ptr FontStruct -> IO ()
 
 openFont :: String -> Int -> IO Font
@@ -83,7 +83,7 @@ openFont file size = do
 closeFont :: Font -> IO ()
 closeFont (WrapFont f) = withForeignPtr f c_ttf_close_font
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_RenderText_Solid_Ptrd"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_RenderText_Solid_Ptrd"
     c_ttf_render_text_solid :: Ptr FontStruct -> CString -> Ptr SDL.Color -> IO (Ptr SDL.SurfaceStruct)
 
 renderTextSolid :: Font -> SDL.Color -> String -> IO SDL.Surface
@@ -92,7 +92,7 @@ renderTextSolid f color t = do
     withForeignPtr (unwrapFont f) $ \font ->
         with color $ \colorPtr -> c_ttf_render_text_solid font text colorPtr >>= SDL.mkFinalizedSurface
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_RenderText_Blended_Ptrd"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_RenderText_Blended_Ptrd"
     c_ttf_render_text_blended :: Ptr FontStruct -> CString -> Ptr SDL.Color -> IO (Ptr SDL.SurfaceStruct)
 
 renderTextBlended :: Font -> SDL.Color -> String -> IO SDL.Surface
@@ -101,7 +101,7 @@ renderTextBlended f color t = do
     withForeignPtr (unwrapFont f) $ \font ->
         with color $ \colorPtr -> c_ttf_render_text_blended font text colorPtr >>= SDL.mkFinalizedSurface
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_SizeText"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_SizeText"
     c_ttf_size_text :: Ptr FontStruct -> CString -> Ptr CInt -> Ptr CInt -> IO CInt
 
 sizeText :: Font -> String -> IO (Int, Int)
@@ -118,7 +118,7 @@ sizeText f str = do
 
 data Hint = Normal | Light | Mono | None deriving (Show, Eq, Enum)
 
-foreign import ccall safe "SDL2/SDL_ttf.h TTF_SetFontHinting"
+foreign import ccall unsafe "SDL2/SDL_ttf.h TTF_SetFontHinting"
     c_ttf_set_font_hinting :: Ptr FontStruct -> CInt -> IO ()
 
 setFontHinting :: Hint -> Font -> IO ()

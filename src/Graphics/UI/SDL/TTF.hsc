@@ -3,8 +3,10 @@
 module Graphics.UI.SDL.TTF
 ( withTTF
 , Font
+, Hint (..)
 , openFont
 , closeFont
+, setFontHinting
 , renderTextSolid
 , sizeText
 ) where
@@ -103,3 +105,11 @@ sizeText f str = do
     free wptr
     free hptr
     return (w, h)
+
+data Hint = Normal | Light | Mono | None deriving (Show, Eq, Enum)
+
+foreign import ccall safe "SDL2/SDL_ttf.h TTF_SetFontHinting"
+    c_ttf_set_font_hinting :: Ptr FontStruct -> CInt -> IO ()
+
+setFontHinting :: Hint -> Font -> IO ()
+setFontHinting h f = withForeignPtr (unwrapFont f) $ \font -> c_ttf_set_font_hinting font (toEnum $ fromEnum h)

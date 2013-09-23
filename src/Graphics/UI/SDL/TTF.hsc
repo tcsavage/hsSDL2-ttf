@@ -2,6 +2,7 @@
 
 module Graphics.UI.SDL.TTF
 ( withTTF
+, Font
 , openFont
 , closeFont
 , renderTextSolid

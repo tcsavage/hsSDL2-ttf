@@ -11,7 +11,7 @@ main = withInit [InitEverything] $ withTTF $ do
         withRenderer win (Device (-1)) [Accelerated, PresentVSync] $ \ren -> do
             --bmp <- loadBMP "hello.bmp"
             --tex1 <- createTextureFromSurface ren bmp
-            txt <- renderTextSolid f (Color 0 0 255) "Foo"
+            txt <- renderTextBlended f (Color 0 0 255) "Foo"
             tex2 <- createTextureFromSurface ren txt
             (w, h) <- sizeText f "Foo"
             renderClear ren

@@ -5,3 +5,7 @@
 SDL_Surface *TTF_RenderText_Solid_Ptrd(TTF_Font *font, const char *text, SDL_Color *fg) {
     return TTF_RenderText_Solid(font, text, *fg);
 }
+
+SDL_Surface *TTF_RenderText_Blended_Ptrd(TTF_Font *font, const char *text, SDL_Color *fg) {
+    return TTF_RenderText_Blended(font, text, *fg);
+}

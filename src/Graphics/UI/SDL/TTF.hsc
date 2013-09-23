@@ -8,6 +8,7 @@ module Graphics.UI.SDL.TTF
 , closeFont
 , setFontHinting
 , renderTextSolid
+, renderTextBlended
 , sizeText
 ) where
 
@@ -90,6 +91,15 @@ renderTextSolid f color t = do
     text <- newCString t
     withForeignPtr (unwrapFont f) $ \font ->
         with color $ \colorPtr -> c_ttf_render_text_solid font text colorPtr >>= SDL.mkFinalizedSurface
+
+foreign import ccall safe "SDL2/SDL_ttf.h TTF_RenderText_Blended_Ptrd"
+    c_ttf_render_text_blended :: Ptr FontStruct -> CString -> Ptr SDL.Color -> IO (Ptr SDL.SurfaceStruct)
+
+renderTextBlended :: Font -> SDL.Color -> String -> IO SDL.Surface
+renderTextBlended f color t = do
+    text <- newCString t
+    withForeignPtr (unwrapFont f) $ \font ->
+        with color $ \colorPtr -> c_ttf_render_text_blended font text colorPtr >>= SDL.mkFinalizedSurface
 
 foreign import ccall safe "SDL2/SDL_ttf.h TTF_SizeText"
     c_ttf_size_text :: Ptr FontStruct -> CString -> Ptr CInt -> Ptr CInt -> IO CInt

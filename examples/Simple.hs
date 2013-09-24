@@ -4,12 +4,14 @@ import Control.Concurrent
 import Graphics.UI.SDL
 import Graphics.UI.SDL.TTF as TTF
 
+import Paths_hsSDL2_ttf
+
 main :: IO ()
 main = withInit [InitEverything] $ withTTF $ do
-    f <- openFont "Aldrich-Regular.ttf" 100
+    f <- getDataFileName "Aldrich-Regular.ttf" >>= \file -> openFont file 100
     withWindow "Hello World!" (Position 100 100) (Size 640 480) [WindowShown] $ \win ->
         withRenderer win (Device (-1)) [Accelerated, PresentVSync] $ \ren -> do
-            bmp <- loadBMP "hello.bmp"
+            bmp <- getDataFileName "hello.bmp" >>= loadBMP
             tex1 <- createTextureFromSurface ren bmp
             txt <- renderTextBlended f "Foo" (Color 0 0 255)
             tex2 <- createTextureFromSurface ren txt

@@ -4,7 +4,7 @@ import Control.Concurrent
 import Graphics.UI.SDL
 import Graphics.UI.SDL.TTF as TTF
 
-import Paths_hsSDL2_ttf
+import Paths_SDL2_ttf
 
 main :: IO ()
 main = withInit [InitEverything] $ withTTF $ do

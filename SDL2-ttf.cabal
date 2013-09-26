@@ -37,7 +37,7 @@ library
   include-dirs:        cbits
   c-sources:           cbits/wrappers.c
 
-executable sdlttf-examples-simple
+executable sdl2ttf-examples-simple
   main-is:             Simple.hs
   hs-source-dirs:      examples
   extra-libraries:     SDL2_ttf
